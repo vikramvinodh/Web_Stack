@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="christ.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<master_programs>
+    <program>
+        <program_name>Master of Computer Applications (MCA)</program_name>
+        <courses>
+            <course_name>Introduction to Programming</course_name>
+            <course_name>Web stack </course_name>
+            <course_name> Python</course_name>
+            <course_name> C</course_name>
+            <course_name> MFC</course_name>
+            <course_name> ADT</course_name>
+
+        </courses>
+    </program>
+    <program>
+        <program_name>Master of Science (Data Science)</program_name>
+        <courses>
+            <course_name>Statistics for Data Science</course_name>
+         
+        </courses>
+    </program>
+</master_programs>
