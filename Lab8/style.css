@@ -1,0 +1,57 @@
+input {
+    border-radius: 40px !important;
+
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+
+form {
+    padding: 1rem;
+    margin: 1rem;
+    background-color: black;
+    border-radius: 40px;
+
+}
+
+.cards-layout {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.cards {
+    margin: 1rem;
+    padding: 1rem;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    width: 60%;
+
+}
+
+.cards h2 {
+    font-size: 23px;
+    font-weight: 600;
+    text-align: start;
+}
+
+.cards p {
+    font-size: 16px;
+    text-align: start;
+
+}
+
+button {
+    background-color: black;
+    color: white;
+    font-size: 600;
+    padding: 1rem;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+}

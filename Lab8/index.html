@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <section>
+        <div class="d-flex justify-content-center">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <form class="d-flex" role="search" id="searchForm">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                            id="searchInput">
+                        <button class="btn d-flex justify-content-center align-items-center" type="submit">
+                            <img src="./images/search.png" alt="search" width="20px" />
+                        </button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+
+        <div class="cards-layout">
+            <div class="container cards mt-4" id="productContainer">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            <button id="loadMoreButton">Load More</button>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4" id="noResultsMessage" >
+            <p>No results found.</p>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let productsData = [];
+            let currentIndex = 0;
+            const productsPerRow = 3;
+
+            function displayProducts(startIndex, data = productsData) {
+                const productContainer = document.getElementById("productContainer");
+                productContainer.innerHTML = "";
+
+                for (let i = startIndex; i < startIndex + productsPerRow; i++) {
+                    if (i >= data.length) {
+                        break;
+                    }
+
+                    const product = data[i];
+                    const card = createProductCard(product);
+
+                    productContainer.appendChild(card);
+                }
+
+                // Show/hide "No results found" message
+                const noResultsMessage = document.getElementById("noResultsMessage");
+                if (data.length === 0) {
+                    noResultsMessage.style.display = "block";
+                } else {
+                    noResultsMessage.style.display = "none";
+                }
+            }
+
+            function createProductCard(product) {
+                const card = document.createElement("div");
+                card.classList.add("col-md-4", "mb-4", "product-card");
+
+                const img = document.createElement("img");
+                img.src = product.image_url;
+                img.alt = product.name;
+                img.style.maxWidth = "100%";
+
+                const name = document.createElement("h2");
+                name.textContent = product.name;
+
+                const description = document.createElement("p");
+                description.textContent = product.description;
+
+                const price = document.createElement("p");
+                price.textContent = "Price: $" + product.price.toFixed(2);
+
+                card.appendChild(img);
+                card.appendChild(name);
+                card.appendChild(description);
+                card.appendChild(price);
+
+                return card;
+            }
+
+            fetch("https://cynthiaesthermetilda.github.io/Xhrdemo/products.json")
+                .then(response => response.json())
+                .then(data => {
+                    productsData = data;
+                    displayProducts(currentIndex);
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                });
+
+            const loadMoreButton = document.getElementById("loadMoreButton");
+            loadMoreButton.addEventListener("click", function () {
+                currentIndex += productsPerRow;
+                displayProducts(currentIndex);
+
+                if (currentIndex >= productsData.length) {
+                    loadMoreButton.style.display = "none";
+                }
+            });
+
+            const searchForm = document.getElementById("searchForm");
+            const searchInput = document.getElementById("searchInput");
+
+            searchForm.addEventListener("submit", function (e) {
+                e.preventDefault(); // Prevent the form from submitting
+
+                const searchTerm = searchInput.value.trim().toLowerCase();
+
+                // Filter products based on the search term
+                const filteredProducts = productsData.filter(product =>
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm)
+                );
+
+                currentIndex = 0; // Reset the current index
+
+                displayProducts(currentIndex, filteredProducts); // Display filtered products
+
+                // Show/hide load more button based on filtered products count
+                if (filteredProducts.length > currentIndex + productsPerRow) {
+                    loadMoreButton.style.display = "block";
+                } else {
+                    loadMoreButton.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
